@@ -1,6 +1,5 @@
 package devops.backendprueba.controller;
 
-import devops.backendprueba.controller.CurrencyController;
 import devops.backendprueba.service.DolarService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -27,10 +24,7 @@ public class CurrencyControllerIntegrationTest {
 
     @Test
     public void checkCotizacion() throws Exception {
-        when(dolarService.getCotizacion()).thenReturn("40p");
-
         mvc.perform(get("http://localhost:8080/get_cotizacion_dolar"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("40p"));
+                .andExpect(status().isOk());
     }
 }

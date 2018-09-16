@@ -15,7 +15,7 @@ public class CurrencyController {
         this.dolarService = dolarService;
     }
 
-    @GetMapping("/get_cotizacion_dolar")
+    @GetMapping(value = "/get_cotizacion_dolar", produces = "application/json")
     public String getCotizacionDolar() {
         return dolarService.getCotizacion();
     }
