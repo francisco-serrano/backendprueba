@@ -1,6 +1,7 @@
 package devops.backendprueba.controller;
 
 import devops.backendprueba.service.DolarService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,6 @@ public class CurrencyController {
 
     @GetMapping(value = "/get_cotizacion_dolar", produces = "application/json")
     public String getCotizacionDolar() {
-        return dolarService.getCotizacion();
+        return dolarService.getCotizacion().toString();
     }
 }
