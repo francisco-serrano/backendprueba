@@ -1,44 +1,57 @@
 package devops.backendprueba.service;
 
-import devops.backendprueba.DolarServiceTestConfig;
+import devops.backendprueba.Configuration;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestPropertySource(locations = "classpath:configuration.properties")
-@ContextConfiguration(classes = DolarServiceTestConfig.class)
-public class DolarServiceTest {
+@SpringBootTest
+@RunWith(SpringRunner.class)
+public class CurrencyServiceTest {
 
-    private DolarService dolarService;
+    @TestConfiguration
+    static class CurrencyServiceTestContextConfiguration {
+
+        @Bean
+        public Configuration configuration() {
+            return new Configuration();
+        }
+
+        @Bean
+        public CurrencyService currencyService() {
+            return new CurrencyService();
+        }
+    }
 
     @Autowired
-    public void setDolarService(DolarService dolarService) {
-        this.dolarService = dolarService;
-    }
+    private CurrencyService dolarService;
 
     @Test
     public void checkFormatoCotizacion() throws JSONException {
         JSONObject json = dolarService.getCotizacion();
 
+        // Chequeo formato de la fecha
         assertTrue(((String) json.get("d")).matches("([0-9]+-[0-9]+-[0-9]+)"));
+
+        // Chequeo formato de la cotización
         assertTrue(String.valueOf((double) json.get("v")).matches("[0-9.]+"));
     }
 
     @Test
     public void checkAnalisisValor() throws Exception {
         // Preguntar si se debieran testear los métodos privados
-        Method method = DolarService.class.getDeclaredMethod("analizarValor", JSONObject.class);
+        Method method = CurrencyService.class.getDeclaredMethod("analizarValor", JSONObject.class);
         method.setAccessible(true);
 
         JSONObject jsonPrueba = new JSONObject();

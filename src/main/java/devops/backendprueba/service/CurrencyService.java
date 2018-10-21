@@ -9,14 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DolarService {
-
-    private Configuration configuration;
+public class CurrencyService {
 
     @Autowired
-    public DolarService(Configuration configuration) {
-        this.configuration = configuration;
-    }
+    private Configuration configuration;
 
     public JSONObject getCotizacion() {
         JsonNode response = null;
@@ -31,6 +27,7 @@ public class DolarService {
 
         assert response != null;
 
+        // Obtengo la última de todas las cotizaciones que se muestra en el JSON
         JSONObject jsonRetornar = getLastCotizacion(response);
         jsonRetornar.put("mensaje", analizarValor(jsonRetornar));
 

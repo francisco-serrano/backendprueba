@@ -13,8 +13,15 @@ public class Configuration {
     @Value("${bcra_auth_token}")
     private String bcraAuthToken;
 
+    @Value("${mensaje_prueba}")
+    private String mensajePrueba;
+
     public String getBcraAuthToken() {
         return bcraAuthToken;
+    }
+
+    public String getMensajePrueba() {
+        return mensajePrueba;
     }
 }
 

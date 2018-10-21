@@ -1,6 +1,5 @@
 package devops.backendprueba.controller;
 
-import devops.backendprueba.service.DolarService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +13,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CurrencyController.class)
-public class CurrencyControllerIntegrationTest {
+public class CurrencyControllerTest {
 
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     @MockBean
-    DolarService dolarService;
+    private CurrencyController currencyController;
 
     @Test
     public void checkCotizacion() throws Exception {
