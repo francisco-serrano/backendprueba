@@ -3,5 +3,5 @@ jdk: openjdk10
 
 install: true
 
-script:
+after_success:
 - bash < (curl -s https://codecov.io/bash)
