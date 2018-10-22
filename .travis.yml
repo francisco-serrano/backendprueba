@@ -4,5 +4,4 @@ jdk: openjdk10
 install: true
 
 script:
-- bash <(curl -s https://codecov.io/bash)
-- mvn test -B
+- bash < (curl -s https://codecov.io/bash)
