@@ -1,7 +1,5 @@
 language: java
 jdk: openjdk10
 
-#install: true
-
 after_success:
 - bash <(curl -s https://codecov.io/bash)
