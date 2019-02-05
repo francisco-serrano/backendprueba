@@ -4,6 +4,7 @@ import devops.backendprueba.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,5 +24,11 @@ public class CurrencyController {
     @GetMapping(value = "/get_cotizacion_dolar", produces = "application/json")
     public String getCotizacionDolar() {
         return dolarService.getCotizacion().toString();
+    }
+
+    @PutMapping(value = "/update_database")
+    public void updateDatabase()
+    {
+        dolarService.addValues();
     }
 }
