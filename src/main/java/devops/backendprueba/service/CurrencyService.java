@@ -4,9 +4,13 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import devops.backendprueba.Configuration;
+import devops.backendprueba.database.SQLiteJDBC;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.stereotype.Service;
+import java.sql.*;
 
 @Service
 public class CurrencyService {
@@ -14,9 +18,27 @@ public class CurrencyService {
     @Autowired
     private Configuration configuration;
 
-    public JSONObject getCotizacion() {
-        JsonNode response = null;
+    public void addValues(){
+        SQLiteJDBC db = new SQLiteJDBC();
+        db.makeConnection();
+        JsonNode response = getJsonDolar();
+        JSONArray jsons = response.getArray();
+        int i = jsons.length()-1;
+        while (i>0){
+            JSONObject j = jsons.getJSONObject(i);
+            String date = j.getString("d");
+            double val = j.getDouble("v");
+            if (!db.existDate(date)){
+                db.insertValue(date,val);
+            }
+            i--;
+        }
+        db.closeConnection();
+        System.out.println("Carga de datos finalizada");
+    }
 
+    private JsonNode getJsonDolar(){
+        JsonNode response = null;
         try {
             response = Unirest.get("http://api.estadisticasbcra.com/usd_of")
                     .header("Authorization", "Bearer " + configuration.getBcraAuthToken())
@@ -24,20 +46,17 @@ public class CurrencyService {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-
         assert response != null;
-
-        // Obtengo la última de todas las cotizaciones que se muestra en el JSON
-        JSONObject jsonRetornar = getLastCotizacion(response);
-        jsonRetornar.put("mensaje", analizarValor(jsonRetornar));
-
-        return jsonRetornar;
+        return response;
     }
 
-    private JSONObject getLastCotizacion(JsonNode json) {
-        int cantidadCotizaciones = json.getArray().length();
-
-        return json.getArray().getJSONObject(cantidadCotizaciones - 1);
+    public JSONObject getCotizacion() {
+        SQLiteJDBC db = new SQLiteJDBC();
+        db.makeConnection();
+        JSONObject last = db.getLastValue();
+        last.put("m", analizarValor(last));
+        db.closeConnection();
+        return last;
     }
 
     private String analizarValor(JSONObject json) {
