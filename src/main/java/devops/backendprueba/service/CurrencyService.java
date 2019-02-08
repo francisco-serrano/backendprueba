@@ -4,13 +4,11 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import devops.backendprueba.Configuration;
-import devops.backendprueba.database.SQLiteJDBC;
+import devops.backendprueba.database.JDBCService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.stereotype.Service;
-import java.sql.*;
 
 @Service
 public class CurrencyService {
@@ -19,7 +17,7 @@ public class CurrencyService {
     private Configuration configuration;
 
     public void addValues(){
-        SQLiteJDBC db = new SQLiteJDBC();
+        JDBCService db = new JDBCService();
         db.makeConnection();
         JsonNode response = getJsonDolar();
         JSONArray jsons = response.getArray();
@@ -51,7 +49,7 @@ public class CurrencyService {
     }
 
     public JSONObject getCotizacion() {
-        SQLiteJDBC db = new SQLiteJDBC();
+        JDBCService db = new JDBCService();
         db.makeConnection();
         JSONObject last = db.getLastValue();
         last.put("m", analizarValor(last));
