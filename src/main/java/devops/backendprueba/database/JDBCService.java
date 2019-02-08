@@ -20,7 +20,7 @@ public class JDBCService {
         if (isDBEmpty())
             initializeDB();
         else
-            System.out.println("La base de datos ya fue inicializada");
+            System.out.println("La base de datos ya fue inicializada.");
     }
 
     private void initializeDB(){
