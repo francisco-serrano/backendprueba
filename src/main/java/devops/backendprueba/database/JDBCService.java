@@ -31,6 +31,7 @@ public class JDBCService {
             String someshit = "INSERT INTO Dolar " +
                     "VALUES('0000/00/00', 00.0000);";
             stmt.executeUpdate(someshit);
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,6 +63,7 @@ public class JDBCService {
             ResultSet rs = null;
             rs = stmt.executeQuery(sql);
             boolean tof = rs.next();
+            stmt.close();
             return !(tof);
         } catch (SQLException e) {
             e.printStackTrace();
