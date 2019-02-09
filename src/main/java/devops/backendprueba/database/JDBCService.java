@@ -29,7 +29,7 @@ public class JDBCService {
             Statement stmt = null;
             stmt = conn.createStatement();
             String someshit = "INSERT INTO Dolar " +
-                    "VALUES('0000/00/00', 00.0000);";
+                    "VALUES('0000-00-00', 00.0000);";
             stmt.executeUpdate(someshit);
             stmt.close();
         } catch (SQLException e) {
