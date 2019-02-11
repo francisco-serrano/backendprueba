@@ -2,10 +2,7 @@ package devops.backendprueba.controller;
 
 import devops.backendprueba.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = {
@@ -19,6 +16,12 @@ public class CurrencyController {
     @Autowired
     public CurrencyController(CurrencyService dolarService) {
         this.dolarService = dolarService;
+    }
+
+    @RequestMapping("/")
+    @ResponseBody
+    String home() {
+        return "Hello World!";
     }
 
     @GetMapping(value = "/get_cotizacion_dolar", produces = "application/json")
