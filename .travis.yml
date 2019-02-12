@@ -14,3 +14,4 @@ deploy:
   provider: heroku
   api_key:
     secure: "8f1e3041-14b2-471c-a37a-075fe67865ce"
+  app: "devops-backend-app"
