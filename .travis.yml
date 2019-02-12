@@ -9,3 +9,8 @@ before_install:
 
 after_success:
 - java -jar ./codacy-coverage-reporter-5.0.310-assembly.jar report -l Java -r ./target/site/jacoco-ut/jacoco.xml
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: "8f1e3041-14b2-471c-a37a-075fe67865ce"
