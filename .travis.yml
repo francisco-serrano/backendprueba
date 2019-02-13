@@ -1,17 +1,27 @@
 language: java
 jdk: openjdk10
 
-sudo: false
+sudo: true
+
+services:
+- docker
 
 before_install:
 - echo $PWD
 - wget http://central.maven.org/maven2/com/codacy/codacy-coverage-reporter/5.0.310/codacy-coverage-reporter-5.0.310-assembly.jar
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin #docker credentials are set in travis enviroment variables
+- echo "$HEROKU_API_KEY" | docker login -u _ --password-stdin registry.heroku.com
 
 after_success:
 - java -jar ./codacy-coverage-reporter-5.0.310-assembly.jar report -l Java -r ./target/site/jacoco-ut/jacoco.xml
+#docker commands follow now
+- docker build -t $DOCKER_USERNAME/backend-image .
+- docker tag $DOCKER_USERNAME/backend-image registry.heroku.com/$HEROKU_APP_NAME/web
+- docker images
 
 deploy:
-  provider: heroku
-  api_key:
-    secure: "8f1e3041-14b2-471c-a37a-075fe67865ce"
-  app: "devops-backend-app"
+  provider: script
+  script:
+     docker tag backend-image $DOCKER_USERNAME/backend-image;
+     docker push $DOCKER_USERNAME/backend-image;
+     docker push registry.heroku.com/$HEROKU_APP_NAME/web;

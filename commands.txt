@@ -1,0 +1,3 @@
+to build jar: mvn clean package
+
+when docker doesnt respond: docker-machine restart 
