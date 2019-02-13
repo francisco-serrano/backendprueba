@@ -6,18 +6,19 @@ sudo: required
 services:
 - docker
 
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::7}
+
 before_install:
 - echo $PWD
 - wget http://central.maven.org/maven2/com/codacy/codacy-coverage-reporter/5.0.310/codacy-coverage-reporter-5.0.310-assembly.jar
 #- docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 
-script:
-- ./mvnw clean install -B
-
 after_success:
 - java -jar ./codacy-coverage-reporter-5.0.310-assembly.jar report -l Java -r ./target/site/jacoco-ut/jacoco.xml
 #docker commands follow now
-- docker build -t "$DOCKER_USERNAME"/backend-image .
+- docker build -t "$DOCKER_USERNAME"/backend-image:$COMMIT .
 - docker tag "$DOCKER_USERNAME"/backend-image registry.heroku.com/"$HEROKU_APP_NAME"/web
 - docker images
 
@@ -27,18 +28,14 @@ before_deploy:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin #docker credentials are set in travis enviroment variables
 
 deploy:
-  provider: script
-  script: docker push "$DOCKER_USERNAME"/backend-image
-
-#deploy:
-#  provider: heroku
-#  api_key:
-#    secure: $HEROKU_API_KEY
-#  app: $HEROKU_APP_NAME
-#  on:
-#    repo: $DOCKER_USERNAME/backend-image
-
-
+  - provider: script
+    script: docker push "$DOCKER_USERNAME"/backend-image:$COMMIT
+  - provider: heroku
+    api_key:
+      secure: $HEROKU_API_KEY
+    app: $HEROKU_APP_NAME
+    on:
+      repo: $DOCKER_USERNAME/backend-image
 #deploy:
 #  provider: script
 #  script:
