@@ -4,11 +4,11 @@ jdk: openjdk10
 sudo: required
 
 services:
-- docker
+ - docker
 
 env:
- global:
- - COMMIT=${TRAVIS_COMMIT::7}
+  global:
+    - COMMIT=${TRAVIS_COMMIT::7}
 
 before_install:
 - echo $PWD
@@ -27,11 +27,11 @@ before_deploy:
 - heroku container:login
 
 deploy:
- - provider: script
- script:
-  docker push "$DOCKER_USERNAME"/backend-image:$COMMIT;
-  docker push registry.heroku.com/$HEROKU_APP_NAME/web;
-  heroku container:release web release;
+  - provider: script
+  script:
+    docker push "$DOCKER_USERNAME"/backend-image:$COMMIT;
+    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+    heroku container:release web release;
 
 #  - provider: heroku
 #    api_key:
@@ -39,4 +39,3 @@ deploy:
 #    app: $HEROKU_APP_NAME
 #    on:
 #      repo: $DOCKER_USERNAME/backend-image:$COMMIT
-
