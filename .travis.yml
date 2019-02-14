@@ -13,7 +13,6 @@ env:
 before_install:
 - echo $PWD
 - wget http://central.maven.org/maven2/com/codacy/codacy-coverage-reporter/5.0.310/codacy-coverage-reporter-5.0.310-assembly.jar
-- wget -qO- https://toolbelt.heroku.com/install.sh | sh #install heroku CLI
 
 after_success:
 - java -jar ./codacy-coverage-reporter-5.0.310-assembly.jar report -l Java -r ./target/site/jacoco-ut/jacoco.xml
@@ -24,11 +23,8 @@ after_success:
 
 before_deploy:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin #docker credentials are set in travis enviroment variables
-- heroku login
-- heroku container:login
-- heroku container:push web
-- heroku container:release web
-
+- docker push "$DOCKER_USERNAME"/backend-image:$COMMIT
+ 
 deploy:
 - provider: script
   script: bash scripts/deploy-script.sh
