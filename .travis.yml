@@ -7,14 +7,13 @@ services:
 - docker
 
 env:
-  global:
-  - COMMIT=${TRAVIS_COMMIT::7}
+ global:
+ - COMMIT=${TRAVIS_COMMIT::7}
 
 before_install:
 - echo $PWD
 - wget http://central.maven.org/maven2/com/codacy/codacy-coverage-reporter/5.0.310/codacy-coverage-reporter-5.0.310-assembly.jar
-- wget -qO- https://toolbelt.heroku.com/install.sh | sh
-#- docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+- wget -qO- https://toolbelt.heroku.com/install.sh | sh #install heroku CLI
 
 after_success:
 - java -jar ./codacy-coverage-reporter-5.0.310-assembly.jar report -l Java -r ./target/site/jacoco-ut/jacoco.xml
@@ -23,19 +22,16 @@ after_success:
 - docker tag "$DOCKER_USERNAME"/backend-image:$COMMIT registry.heroku.com/"$HEROKU_APP_NAME"/web
 - docker images
 
-
-
 before_deploy:
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin #docker credentials are set in travis enviroment variables
 - heroku container:login
 
-
 deploy:
-  - provider: script
-    script:
-    docker push "$DOCKER_USERNAME"/backend-image:$COMMIT;
-    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
-    heroku container:release web release;
+ - provider: script
+ script:
+  docker push "$DOCKER_USERNAME"/backend-image:$COMMIT;
+  docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+  heroku container:release web release;
 
 #  - provider: heroku
 #    api_key:
