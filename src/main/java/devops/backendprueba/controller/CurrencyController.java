@@ -21,7 +21,7 @@ public class CurrencyController {
     @RequestMapping("/")
     @ResponseBody
     String home() {
-        return "Hello World!";
+        return "Backend aplication!";
     }
 
     @GetMapping(value = "/get_cotizacion_dolar", produces = "application/json")
