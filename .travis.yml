@@ -35,7 +35,7 @@ deploy:
     script:
     docker push "$DOCKER_USERNAME"/backend-image:$COMMIT;
     docker push registry.heroku.com/$HEROKU_APP_NAME/web;
-    heroku container:release web release
+    heroku container:release web release;
 
 #  - provider: heroku
 #    api_key:
