@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+  spring-boot:
+    image: "38831760/backend-image"
+    ports:
+     - "8080:8080"
+    container_name: backend
+  prometheus:
+    image: "prom/prometheus"
+    ports:
+     - "9090:9090"
+    volumes:
+      - type: bind
+        source: ./prometheus/
+        target: /etc/prometheus/
+    command:
+    - '-config.file=/etc/prometheus/prometheus.yml'
+    container_name: prometheus
+  grafana:
+     image: "grafana/grafana"
+     ports:
+     - "3000:3000"
+     depends_on: ["prometheus"]
+     container_name: grafana
