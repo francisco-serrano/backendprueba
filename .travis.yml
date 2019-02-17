@@ -17,7 +17,7 @@ before_install:
 after_success:
 - java -jar ./codacy-coverage-reporter-5.0.310-assembly.jar report -l Java -r ./target/site/jacoco-ut/jacoco.xml
 #docker commands follow now
-- docker build -t "$DOCKER_USERNAME"/backend-image:$COMMIT .
+- docker build -t "$DOCKER_USERNAME"/backend-image:$COMMIT - < dockerfile.backend
 - docker tag "$DOCKER_USERNAME"/backend-image:$COMMIT registry.heroku.com/"$HEROKU_APP_NAME"/web
 - docker images
 
