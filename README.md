@@ -4,8 +4,11 @@
 
 Proyecto de prueba para la optativa DevOps
 
-Tecnologías Empleadas hasta el momento:
+Tecnologías Empleadas:
  - Spring Boot
  - JUnit
  - Docker
  - TravisCI
+ - Heroku
+ - Prometheus
+ - Grafana  
