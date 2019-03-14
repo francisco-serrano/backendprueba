@@ -14,7 +14,7 @@ services:
     - '--config.file=/etc/prometheus/prometheus.yml'
     container_name: prometheus
   grafana:
-     image: "grafana/grafana"
+     image: "grafana/grafana:master"
      ports:
      - "3000:3000"
      depends_on: ["prometheus"]
