@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    image: 38831760/backend-image:e2b5270
+    ports:
+     - "8080:8080"
+  prometheus:
+    image: "prom/prometheus"
+    ports:
+     - "9090:9090"
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+    - '--config.file=/etc/prometheus/prometheus.yml'
+    container_name: prometheus
+  grafana:
+     image: "grafana/grafana:master"
+     ports:
+     - "3000:3000"
+     depends_on: ["prometheus"]
+     container_name: grafana
+     
